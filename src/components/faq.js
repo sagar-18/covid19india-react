@@ -9,7 +9,7 @@ function FAQ(props) {
   }, [1]);
 
   const getFAQs = () => {
-    axios.get('https://india.coronacurfew.live/faq.json')
+    axios.get('https://covid19india-react.cclindia.now.sh/faq.json')
         .then((response) => {
           setFaq(response.data.faq);
         })
