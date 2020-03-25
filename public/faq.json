@@ -1,0 +1,24 @@
+{
+	"faq": [
+		{
+			"answer": "No, we are running in public interests.",
+			"qno": "1",
+			"question": "Are you official GOI Website?"
+		},
+		{
+			"answer": "MoH updates the data at a scheduled time and we update them based on State Press Bulletin and Reliable news channel.",
+			"qno": "2",
+			"question": "Why does india.coronacurfew.live have more postive count than MoH?"
+		},
+		{
+			"answer": "Because it affects all of us. Today it's someone else who is getting infected. Tomorrow it will be us. We need to prevent the spread. We need to document the data so that people with knowledge are able to map the data.",
+			"qno": "3",
+			"question": "Why are you guys putting in time and resources to do this while not gaining a single penny from it?"
+		},
+		{
+			"answer": "We collect the details from each State Press release, official government links and reputable news channel as source. Data is validated by group of volunteers and pushed into Google sheets.",
+			"qno": "4",
+			"question": "How is the data gathered for this project?"
+		}
+	]
+}
