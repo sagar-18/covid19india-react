@@ -23,6 +23,12 @@ function Navbar(props) {
             <span className={`fadeInUp ${view==='Updates' ? 'focused' : ''}`} style={{animationDelay: '0.2s'}}>Updates</span>
           </Link>*/}
 
+          <Link to="/global" onClick={()=>{
+            setView('Global');
+          }}>
+            <span className={`fadeInUp ${view==='Global' ? 'focused' : ''}`} style={{animationDelay: '0.3s'}}>Live Global Tracker</span>
+          </Link>
+
           <Link to="/clusters" onClick={()=>{
             setView('Clusters');
           }}>
