@@ -56,12 +56,7 @@ function Home(props) {
               <h3>{lastUpdated.length===0 ? '' : formatDistance(zonedTimeToUtc(new Date(lastUpdated), 'Asia/Calcutta'), zonedTimeToUtc(new Date()))+' Ago'}</h3>
             </div>
           </div>
-             <a href="https://india.coronacurfew.live/global" className="button telegram">
-            <Icon.MessageCircle />
-            <span>Live Global COVID-19 Tracker</span>
-          </a>
-
-        </div>
+           </div>
 
         <Level data={states} deltas={deltas}/>
         <Minigraph timeseries={timeseries} animate={true}/>
