@@ -9,6 +9,7 @@ import Links from './components/links';
 import Summary from './components/summary';
 import Cluster from './components/cluster';
 import FAQ from './components/faq';
+import Global from './components/global';
 
 const history = require('history').createBrowserHistory;
 
@@ -27,6 +28,8 @@ function App() {
               <Route exact path="/summary" render={(props) => <Summary {...props}/>} />
               <Route exact path="/clusters" render={(props) => <Cluster {...props}/>} />
               <Route exact path="/faqs" render={(props) => <FAQ {...props}/>} />
+              <Route exact path="/global" render={(props) => <Global {...props}/>} />
+
             </Switch>
           </div>
         )}
@@ -34,18 +37,18 @@ function App() {
       </Router>
       <footer className="fadeInUp" style={{animationDelay: '2s'}}>
         <img src="/icon.png" alt="logo"/>
-        <h5>We stand with everyone fighting on the frontlines</h5>
+        <h5>Live Dedicated Corona Tracker For India</h5>
         <div className="link">
-          <a href="https://github.com/covid19india">covid19india</a>
+          <a href="https://india.coronacurfew.live">india.coronacurfew.live</a>
 
         </div>
         <div id='footerButtons'>
-          <a className="button" href="https://bit.ly/patientdb" target="_noblank">
-            <Icon.Database /><span>Crowdsourced Patient Database&nbsp;</span>
+          <a className="button" href="https://india.coronacurfew.live/cluster">
+            <Icon.Database /><span>Live India Cluster Database&nbsp;</span>
           </a>
-          <a href="https://bit.ly/covid19crowd" className="button telegram" target="_noblank">
+          <a href="https://www.coronacurfew.live" className="button telegram" target="_noblank">
             <Icon.MessageCircle />
-            <span>Join Telegram to Collaborate!</span>
+            <span>Live Global COVID-19 Tracker</span>
           </a>
         </div>
       </footer>
