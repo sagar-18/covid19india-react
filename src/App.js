@@ -43,7 +43,7 @@ function App() {
 
         </div>
         <div id='footerButtons'>
-          <a className="button" href="https://india.coronacurfew.live/cluster">
+          <a className="button" href="https://india.coronacurfew.live/clusters">
             <Icon.Database /><span>Live India Cluster Database&nbsp;</span>
           </a>
           <a href="https://www.coronacurfew.live" className="button telegram" target="_noblank">
