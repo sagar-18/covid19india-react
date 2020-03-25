@@ -17,7 +17,7 @@ function App() {
   const [theme, setTheme] = useState(localStorage.getItem('theme'));
 
   const toggleTheme = (oldTheme) => {
-    const newTheme = oldTheme === 'light'? 'dark' : 'light';
+    const newTheme = oldTheme === 'dark'? 'light' : 'dark';
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
   };
