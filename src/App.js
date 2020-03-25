@@ -14,13 +14,21 @@ import Banner from './components/banner';
 const history = require('history').createBrowserHistory;
 
 function App() {
+  const [theme, setTheme] = useState(localStorage.getItem('theme'));
+
+  const toggleTheme = (oldTheme) => {
+    const newTheme = oldTheme === 'light'? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+
   return (
-    <div className="App theme--dark">
+    <div className={ theme == 'dark'? 'App theme--dark' : 'App theme--light' } >
       <div className="container">
         <Router history={history}>
           <Route render={({location}) => (
             <div className="Almighty-Router">
-              <Navbar />
+              <Navbar theme = { theme } toggleTheme={ toggleTheme } />
               <Banner />
               <Route exact path="/" render={() => <Redirect to="/" />} />
               <Switch location={location}>

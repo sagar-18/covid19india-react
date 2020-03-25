@@ -125,9 +125,9 @@ $white-text: #e8e4e0;
 $new: #BDBDBD;
 
 $themes: (
-  default: (
+  light: (
       header-bg-color: $gray-light,
-      page-bg-color: $cyan,
+      page-bg-color: $white,
       header-text: $gray-mid,
       header-text-active: $gray,
       header-text-hover: $gray,
@@ -320,6 +320,25 @@ h6 {
       }
     }
   }
+
+  .navbar-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .theme-icon {
+      cursor: pointer;
+      margin-right: 1em;;
+      .fa-sun {
+        color: yellow;
+        align-self: center;
+      }
+      .fa-moon {
+        color: gray;
+        align-self: center;
+      }
+    }
+  }
+
   .focused {
     @include themed() {
       color: t(header-text-active);
