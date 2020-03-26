@@ -118,6 +118,48 @@ $purple-light: #201aa220;
 $purple-hover: #201aa230;
 $purple-mid: #201aa299;
 $purple-light-opaque: #e3e2f3;
+$black: #272b38;
+$white-text: #e8e4e0;
+$new: #BDBDBD;
+
+$themes: (
+  light: (
+      header-bg-color: $gray-light,
+      page-bg-color: $white,
+      header-text: $gray-mid,
+      header-text-active: $gray,
+      header-text-hover: $gray,
+      heading-text: $gray-dark,
+      banner-bg: $purple-light,
+      banner-text: $purple
+  ),
+  dark: (
+      header-bg-color: $black,
+      header-text: $gray,
+      page-bg-color: $black,
+      header-text-hover: $white,
+      header-text-active: $white,
+      heading-text: $white-text,
+      banner-bg: $purple-mid,
+      banner-text: $new
+  ),
+);
+@mixin themed() {
+  @each $theme, $map in $themes {
+    .theme--#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+@function t($key) {
+  @return map-get($theme-map, $key);
+}
 
 @mixin navbarReveal($color) {
   $animation-name: unique-id() !global;
@@ -192,6 +234,11 @@ h6 {
   font-weight: 600;
   text-transform: uppercase;
 }
+.container{
+  @include themed() {
+    background-color: t(page-bg-color);
+  }
+}
 
 .Home {
   display: flex;
@@ -216,8 +263,12 @@ h6 {
   font-size: 0.8rem;
   font-weight: 600;
   color: $purple;
-  background: $purple-light;
-  .snippet {
+@include themed() {
+    color: t(banner-text);
+  }
+  @include themed() {
+    background-color: t(banner-bg);
+  }  .snippet {
     align-self: center;
     width: calc(100%-10rem);
     word-wrap: break-word;
@@ -226,7 +277,6 @@ h6 {
   }
 }
 
-
 .Navbar {
   display: flex;
   flex-direction: row;
@@ -234,7 +284,9 @@ h6 {
   justify-content: space-around;
   text-transform: uppercase;
   font-weight: 900;
-  @include navbarReveal($gray-light);
+@include themed() {
+    @include navbarReveal(t(header-bg-color));
+  }
   .navbar-left {
     margin-left: 2rem;
     flex: 1;
@@ -245,17 +297,41 @@ h6 {
       font-family: 'Archia';
       text-decoration: none;
       margin-right: 2rem;
-      color: $gray-mid;
-      span {
+@include themed() {
+        color: t(header-text);
+      }      span {
         display: inline-block;
         &:hover {
-          color: $gray;
+@include themed() {
+            color: t(header-text-hover);
+          }         
         }
       }
     }
   }
+  
+.navbar-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .theme-icon {
+      cursor: pointer;
+      margin-right: 1em;;
+      .fa-sun {
+        color: lightyellow;
+        align-self: center;
+      }
+      .fa-moon {
+        color: gray;
+        align-self: center;
+      }
+    }
+  }
+
   .focused {
-    color: $gray;
+ @include themed() {
+      color: t(header-text-active);
+    }    
   }
   img {
     width: 3rem;
@@ -279,7 +355,9 @@ h6 {
     margin: 0;
   }
   h1 {
-    color: $gray-dark;
+ @include themed() {
+      color: t(heading-text);
+    }  
   }
   .header-mid {
     display: flex;
@@ -452,7 +530,9 @@ table {
   margin-top: 2rem;
   thead {
     background: $gray-light;
-    color: $gray-dark;
+@include themed() {
+      color: t(heading-text);
+    }  
     text-align: left;
     font-size: 0.75rem;
     th {
@@ -590,7 +670,9 @@ table {
   .header {
     position: absolute;
     top: -5rem;
-    color: $gray-dark;
+    @include themed() {
+      color: t(heading-text);
+    }
   }
   h6.header {
     margin-top: 3rem;
@@ -702,7 +784,9 @@ table {
 
 .timeseries-header {
   h1 {
-    color: $gray-dark;
+@include themed() {
+      color: t(heading-text);
+    }
     margin: 0;
     margin-bottom: 0.5rem;
   }
@@ -868,7 +952,9 @@ table {
   }
   h3 {
     margin-bottom: 0;
-    color: $gray-dark;
+@include themed() {
+      color: t(heading-text);
+    }
     font-weight: 900;
   }
 }
@@ -970,7 +1056,9 @@ footer {
   }
   .question {
     margin-bottom: 0.5rem;
-    color: $gray-dark;
+@include themed() {
+      color: t(heading-text);
+    }
   }
   .answer {
     color: $blue;
