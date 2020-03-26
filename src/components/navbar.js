@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {faMoon, faSun} from '@fortawesome/free-solid-svg-icons';
+library.add(faMoon, faSun);
 
 function Navbar(props) {
   const [view, setView] = useState("Home");
@@ -100,7 +104,11 @@ function Navbar(props) {
           </Link>
         </div>
 
-        <div className="navbar-right"></div>
+        <div className="navbar-right">
+          <div className="theme-icon">
+            <FontAwesomeIcon size="lg" onClick={ () => props.toggleTheme(props.theme) } icon={props.theme == 'dark' ? 'sun' : 'moon'}/>
+            </div>
+          </div>
       </div>
     );
   } else {
