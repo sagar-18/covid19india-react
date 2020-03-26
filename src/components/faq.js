@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 
-function FAQ(props) {
+function Faq(props) {
   const [faq, setFaq] = useState([]);
 
   useEffect(()=>{
@@ -34,4 +34,4 @@ function FAQ(props) {
   );
 }
 
-export default FAQ;
+export default Faq;
