@@ -8,7 +8,7 @@ import Navbar from './components/navbar';
 import Links from './components/links';
 import Summary from './components/summary';
 import Cluster from './components/cluster';
-import FAQ from './components/faq';
+import Faq from './components/faq';
 import Global from './components/global';
 import Banner from './components/banner';
 
@@ -37,7 +37,7 @@ function App() {
                 <Route exact path="/links" render={(props) => <Links {...props}/>} />
                 <Route exact path="/summary" render={(props) => <Summary {...props}/>} />
                 <Route exact path="/clusters" render={(props) => <Cluster {...props}/>} />
-                <Route exact path="/faqs" render={(props) => <FAQ {...props}/>} />
+                <Route exact path="/faq" render={(props) => <Faq {...props}/>} />
                 <Route exact path="/global" render={(props) => <Global {...props}/>} />
 
               </Switch>
