@@ -92,11 +92,11 @@ function Navbar(props) {
           <Link
             to="/faq"
             onClick={() => {
-              setView("FAQs");
+              setView("Faq");
             }}
           >
             <span
-              className={`fadeInUp ${view === "FAQs" ? "focused" : ""}`}
+              className={`fadeInUp ${view === "Faq" ? "focused" : ""}`}
               style={{ animationDelay: "0.4s" }}
             >
               FAQ
