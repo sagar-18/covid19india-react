@@ -55,6 +55,8 @@ function Home(props) {
               <h3>{isNaN(Date.parse(lastUpdated)) ? '6 hours ago' : formatDistance(zonedTimeToUtc(new Date(lastUpdated), 'Asia/Calcutta'), zonedTimeToUtc(new Date()))+' Ago'}</h3>
             </div>
           </div>
+          <a className="button social"><Icon.Twitter/><span>Tweet</span></a>
+
            </div>
 
         <Level data={states} deltas={deltas}/>
