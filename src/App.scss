@@ -670,7 +670,9 @@ table {
   .header {
     position: absolute;
     top: -5rem;
-    color: $gray-dark;
+    @include themed() {
+      color: t(heading-text);
+    }
   }
   h6.header {
     margin-top: 3rem;
@@ -782,7 +784,9 @@ table {
 
 .timeseries-header {
   h1 {
-    color: $gray-dark;
+@include themed() {
+      color: t(heading-text);
+    }
     margin: 0;
     margin-bottom: 0.5rem;
   }
@@ -948,7 +952,9 @@ table {
   }
   h3 {
     margin-bottom: 0;
-    color: $gray-dark;
+@include themed() {
+      color: t(heading-text);
+    }
     font-weight: 900;
   }
 }
@@ -1050,7 +1056,9 @@ footer {
   }
   .question {
     margin-bottom: 0.5rem;
-    color: $gray-dark;
+@include themed() {
+      color: t(heading-text);
+    }
   }
   .answer {
     color: $blue;
