@@ -118,6 +118,48 @@ $purple-light: #201aa220;
 $purple-hover: #201aa230;
 $purple-mid: #201aa299;
 $purple-light-opaque: #e3e2f3;
+$black: #272b38;
+$white-text: #e8e4e0;
+$new: #BDBDBD;
+
+$themes: (
+  light: (
+      header-bg-color: $gray-light,
+      page-bg-color: $white,
+      header-text: $gray-mid,
+      header-text-active: $gray,
+      header-text-hover: $gray,
+      heading-text: $gray-dark,
+      banner-bg: $purple-light,
+      banner-text: $purple
+  ),
+  dark: (
+      header-bg-color: $black,
+      header-text: $gray,
+      page-bg-color: $black,
+      header-text-hover: $white,
+      header-text-active: $white,
+      heading-text: $white-text,
+      banner-bg: $purple-mid,
+      banner-text: $new
+  ),
+);
+@mixin themed() {
+  @each $theme, $map in $themes {
+    .theme--#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+@function t($key) {
+  @return map-get($theme-map, $key);
+}
 
 @mixin navbarReveal($color) {
   $animation-name: unique-id() !global;
