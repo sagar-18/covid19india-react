@@ -583,7 +583,6 @@ table {
       }
     }
     tr:nth-child(odd){
-      background-color: $light;
       &:hover {
         background: $gray-hover;
       }
