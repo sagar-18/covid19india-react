@@ -234,6 +234,11 @@ h6 {
   font-weight: 600;
   text-transform: uppercase;
 }
+.container{
+  @include themed() {
+    background-color: t(page-bg-color);
+  }
+}
 
 .Home {
   display: flex;
@@ -258,8 +263,12 @@ h6 {
   font-size: 0.8rem;
   font-weight: 600;
   color: $purple;
-  background: $purple-light;
-  .snippet {
+@include themed() {
+    color: t(banner-text);
+  }
+  @include themed() {
+    background-color: t(banner-bg);
+  }  .snippet {
     align-self: center;
     width: calc(100%-10rem);
     word-wrap: break-word;
@@ -268,7 +277,6 @@ h6 {
   }
 }
 
-
 .Navbar {
   display: flex;
   flex-direction: row;
@@ -276,7 +284,9 @@ h6 {
   justify-content: space-around;
   text-transform: uppercase;
   font-weight: 900;
-  @include navbarReveal($gray-light);
+@include themed() {
+    @include navbarReveal(t(header-bg-color));
+  }
   .navbar-left {
     margin-left: 2rem;
     flex: 1;
@@ -287,17 +297,41 @@ h6 {
       font-family: 'Archia';
       text-decoration: none;
       margin-right: 2rem;
-      color: $gray-mid;
-      span {
+@include themed() {
+        color: t(header-text);
+      }      span {
         display: inline-block;
         &:hover {
-          color: $gray;
+@include themed() {
+            color: t(header-text-hover);
+          }         
         }
       }
     }
   }
+  
+.navbar-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .theme-icon {
+      cursor: pointer;
+      margin-right: 1em;;
+      .fa-sun {
+        color: lightyellow;
+        align-self: center;
+      }
+      .fa-moon {
+        color: gray;
+        align-self: center;
+      }
+    }
+  }
+
   .focused {
-    color: $gray;
+ @include themed() {
+      color: t(header-text-active);
+    }    
   }
   img {
     width: 3rem;
@@ -321,7 +355,9 @@ h6 {
     margin: 0;
   }
   h1 {
-    color: $gray-dark;
+ @include themed() {
+      color: t(heading-text);
+    }  
   }
   .header-mid {
     display: flex;
@@ -494,7 +530,9 @@ table {
   margin-top: 2rem;
   thead {
     background: $gray-light;
-    color: $gray-dark;
+@include themed() {
+      color: t(heading-text);
+    }  
     text-align: left;
     font-size: 0.75rem;
     th {
