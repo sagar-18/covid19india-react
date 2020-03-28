@@ -697,13 +697,22 @@ table {
   align-self: center;
   width: 30rem;
   .header {
+    position: absolute;
+    top: -5rem;
+    @include themed() {
+      color: t(heading-text);
+    }
+  }
+  h6.header {
+    margin-top: 3rem;
+    color: $gray;
+    margin-left: 1px;
+    width: 10rem;
     display: flex;
     flex-direction: column;
-      @include themed() {
-      color: t(heading-text);   
+    color: $gray-dark;
     margin-bottom: 2.5rem;
     align-self: flex-start;
-
   }
   .svg-parent {
     display: flex;
