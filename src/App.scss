@@ -702,15 +702,8 @@ table {
     @include themed() {
       color: t(heading-text);
     }
-  }
-  h6.header {
-    margin-top: 3rem;
-    color: $gray;
-    margin-left: 1px;
-    width: 10rem;
     display: flex;
     flex-direction: column;
-    color: $gray-dark;
     margin-bottom: 2.5rem;
     align-self: flex-start;
   }
