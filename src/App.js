@@ -84,7 +84,6 @@ function App() {
           <a
             className="button"
             href="https://india.coronacurfew.live/clusters"
-            target="_noblank"
           >
             <Icon.Database />
             <span>Live India Clusters Database&nbsp;</span>
@@ -92,7 +91,6 @@ function App() {
           <a
             href="https://www.coronacurfew.live/"
             className="button telegram"
-            target="_noblank"
           >
             <Icon.MessageCircle />
             <span>Live Global Covid-19 Tracker</span>
