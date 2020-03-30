@@ -28,7 +28,7 @@ function App() {
   },{
     pageLink: '/global',
     view: Cluster,
-    displayName: 'Global',
+    displayName: 'Live Global Tracker',
     animationDelayForNavbar: 0.3,
   }, {
     pageLink: '/clusters',
