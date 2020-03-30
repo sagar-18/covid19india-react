@@ -58,10 +58,3 @@ function Navbar(props) {
 }
 
 export default Navbar;
-
-
- <Link to="/global" onClick={()=>{
-            setView('Global');
-          }}>
-            <span className={`fadeInUp ${view==='Global' ? 'focused' : ''}`} style={{animationDelay: '0.3s'}}>Live Global Tracker</span>
-          </Link>
