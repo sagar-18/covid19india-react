@@ -27,7 +27,7 @@ function App() {
     animationDelayForNavbar: 0.2,
   },{
     pageLink: '/global',
-    view: Cluster,
+    view: Global,
     displayName: 'Live Global Tracker',
     animationDelayForNavbar: 0.3,
   }, {
