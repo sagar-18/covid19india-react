@@ -1,72 +1,105 @@
-import React, {useState, useEffect} from 'react';
-import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import * as Icon from 'react-feather';
 
 import './App.scss';
 import Home from './components/home';
 import Navbar from './components/navbar';
 import Links from './components/links';
-import Summary from './components/summary';
 import Cluster from './components/cluster';
-import Faq from './components/faq';
 import Global from './components/global';
+import FAQ from './components/faq';
 import Banner from './components/banner';
-
 
 const history = require('history').createBrowserHistory;
 
 function App() {
-  const [theme, setTheme] = useState(localStorage.getItem('theme'));
-  const toggleTheme = (oldTheme) => {
-    const newTheme = oldTheme === 'dark'? 'light' : 'dark';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-  };
-  
+  // Add a new page simply by adding a new entry in this array.
+  const pages = [{
+    pageLink: '/',
+    view: Home,
+    displayName: 'Home',
+    animationDelayForNavbar: 0.2,
+  },{
+    pageLink: '/global',
+    view: Cluster,
+    displayName: 'Global',
+    animationDelayForNavbar: 0.3,
+  }, {
+    pageLink: '/clusters',
+    view: Cluster,
+    displayName: 'Clusters',
+    animationDelayForNavbar: 0.3,
+  }, {
+    pageLink: '/links',
+    view: Links,
+    displayName: 'Helpful Links',
+    animationDelayForNavbar: 0.4,
+  }, {
+    pageLink: '/faq',
+    view: FAQ,
+    displayName: 'FAQ',
+    animationDelayForNavbar: 0.4,
+  }];
+
   return (
-    <div className={ theme == 'dark'? 'App theme--dark' : 'App theme--light' } >
-      <div className="container">
-        <Router history={history}>
-          <Route render={({location}) => (
+    <div className="App">
+      <Router history={history}>
+        <Route
+          render={({location}) => (
             <div className="Almighty-Router">
-              <Navbar theme = { theme } toggleTheme={ toggleTheme } />
+              <Navbar pages={pages}/>
               <Banner />
               <Route exact path="/" render={() => <Redirect to="/" />} />
               <Switch location={location}>
-                <Route exact path="/" render={(props) => <Home {...props}/>} />
-                <Route exact path="/links" render={(props) => <Links {...props}/>} />
-                <Route exact path="/summary" render={(props) => <Summary {...props}/>} />
-                <Route exact path="/clusters" render={(props) => <Cluster {...props}/>} />
-                <Route exact path="/faq" render={(props) => <Faq {...props}/>} />
-                <Route exact path="/global" render={(props) => <Global {...props}/>} />
-
+                {
+                  pages.map((page, i) => {
+                    return (
+                      <Route exact path={page.pageLink}
+                        component={page.view}
+                        key={i} />
+                    );
+                  })
+                }
               </Switch>
             </div>
           )}
-          />
-        </Router>
-
- 
+        />
+      </Router>
       <footer className="fadeInUp" style={{animationDelay: '2s'}}>
-        <img src="/icon.png" alt="logo"/>
-        <h5>Live Dedicated Corona Tracker For India</h5>
+        <img
+          src="/icon.png"
+          alt="https://india.coronacurfew.live | Coronavirus cases live dashboard"
+        />
+        <h5>Live Dedicated Coronavirus Tracker For India</h5>
         <div className="link">
           <a href="https://india.coronacurfew.live">india.coronacurfew.live</a>
-
         </div>
-        <div id='footerButtons'>
-          <a className="button" href="https://india.coronacurfew.live/clusters">
-            <Icon.Database /><span>Live India Cluster Database&nbsp;</span>
+        <div id="footerButtons">
+          <a
+            className="button"
+            href="https://india.coronacurfew.live/clusters"
+            target="_noblank"
+          >
+            <Icon.Database />
+            <span>Live India Clusters Database&nbsp;</span>
           </a>
-          <a href="https://www.coronacurfew.live" className="button telegram" target="_noblank">
+          <a
+            href="https://www.coronacurfew.live/"
+            className="button telegram"
+            target="_noblank"
+          >
             <Icon.MessageCircle />
-            <span>Live Global COVID-19 Tracker</span>
+            <span>Live Global Covid-19 Tracker</span>
           </a>
         </div>
       </footer>
-
-</div>
-</div>
+    </div>
   );
 }
 
