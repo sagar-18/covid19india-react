@@ -43,12 +43,14 @@ function App() {
     animationDelayForNavbar: 0.3,
   },
   
-  {
+   {
+
       pageLink: '/database',
       view: PatientDB,
       displayName: 'Patients DB',
       animationDelayForNavbar: 0.3,
     },
+
     {
       pageLink: '/links',
       view: Links,
@@ -83,6 +85,7 @@ function App() {
                     />
                   );
                 })}
+                <Redirect to="/" />
               </Switch>
             </div>
           )}
@@ -111,6 +114,7 @@ function App() {
             <span>Live Global Covid-19 Tracker</span>
           </a>
         </div>
+
 
       </footer>
     </div>

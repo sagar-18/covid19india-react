@@ -11,8 +11,9 @@ function Faq(props) {
   const getFAQs = () => {
     axios
       .get('https://india.coronacurfew.live/faq.json')
+
       .then((response) => {
-        setFaq(response.data.faq);
+        setFaq(response.data['faq']);
       })
       .catch((error) => {
         console.log(error);

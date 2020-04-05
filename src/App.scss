@@ -643,7 +643,7 @@ table {
       cursor: pointer;
 
       &:hover {
-        background: $gray-hover;
+        background: $gray-hover !important;
       }
 
       &.divider {
@@ -1404,6 +1404,15 @@ footer {
     color: $blue;
     line-height: 1.5rem;
   }
+
+  a {
+    background: $blue-light;
+    color: $blue;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .PatientsDB {
@@ -1797,7 +1806,7 @@ footer {
     background: #fff;
     width: 30rem;
     height: 40rem;
-    overflow-y: scroll;
+    overflow-y: auto;
     svg {
       width: 20px;
       stroke: $pblue-mid;
