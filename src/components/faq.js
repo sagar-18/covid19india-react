@@ -8,6 +8,10 @@ function Faq(props) {
     getFAQs();
   }, []);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const getFAQs = () => {
     axios
       .get('https://india.coronacurfew.live/faq.json')
