@@ -37,7 +37,7 @@ function Navbar({pages, darkMode, setDarkMode}) {
             setExpand(false);
           }}
         >
-          Coronacurfew<span>Live</span>
+          Coronacurfew.<span>Live</span>
         </Link>
       </div>
 
