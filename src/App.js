@@ -8,10 +8,6 @@ import PatientDB from './components/patientdb';
 import Resources from './components/resources';
 import State from './components/state';
 import ScrollToTop from './utils/ScrollToTop';
-import Global from './components/global';
-import Cluster from './components/cluster';
-
-
 
 import React from 'react';
 import {
@@ -23,7 +19,6 @@ import {
 import {useLocalStorage} from 'react-use';
 
 function App() {
-
   const pages = [
     {
       pageLink: '/',
@@ -32,15 +27,6 @@ function App() {
       animationDelayForNavbar: 0.2,
       showInNavbar: true,
     },
-   
-  {
-    pageLink: '/clusters',
-    view: Cluster,
-    displayName: 'Clusters',
-    animationDelayForNavbar: 0.3,
-  },
-  
-
     {
       pageLink: '/demographics',
       view: PatientDB,
@@ -48,7 +34,6 @@ function App() {
       animationDelayForNavbar: 0.3,
       showInNavbar: true,
     },
-
     {
       pageLink: '/deepdive',
       view: DeepDive,
@@ -118,7 +103,6 @@ function App() {
           )}
         />
       </Router>
-
     </div>
   );
 }
