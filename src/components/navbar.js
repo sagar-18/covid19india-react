@@ -72,8 +72,6 @@ function Navbar({pages, darkMode, setDarkMode}) {
               </Link>
             </span>
               <span>
-      
-            <span>
               <Link to="/demographics">
                 <Icon.Users {...activeNavIcon('/demographics')} />
               </Link>
