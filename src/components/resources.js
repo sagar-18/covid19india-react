@@ -1,25 +1,33 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import FiltersDesktop from './Essentials/essentialsfiltersdesktop';
+import FiltersMobile from './Essentials/essentialsfiltersmobile';
 import ResourceTable from './resourcetable';
+
+import {Fab, Fade} from '@material-ui/core';
 import axios from 'axios';
+import React, {useState, useEffect, useCallback} from 'react';
+import * as Icon from 'react-feather';
+
 function Resources(props) {
   const [data, setData] = useState([]);
+  const [partData, setPartData] = useState([]);
   const [fetched, setFetched] = useState(false);
-  const [city, setCity] = useState('');
-  const [category, setCategory] = useState('');
-  const [indianstate, setIndianState] = useState('');
+  const [city, setCity] = useState('all');
+  const [category, setCategory] = useState('all');
+  const [indianstate, setIndianState] = useState('all');
   const [resourcedict, setResourceDict] = useState({});
   const [showTable, setShowTable] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
-
+  const [hasScrolled, setHasScrolled] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   useEffect(() => {
     if (fetched === false) {
       getResources();
     }
   }, [fetched, data, resourcedict]);
+
   const checkForResizeEvent = useCallback((event) => {
     if (window.innerWidth > 639) setIsDesktop(true);
     else setIsDesktop(false);
-    // console.log(isDesktop);
   }, []);
 
   useEffect(() => {
@@ -31,18 +39,26 @@ function Resources(props) {
     };
   }, [isDesktop, checkForResizeEvent]);
 
+  const checkScrollEvent = useCallback((event) => {
+    window.pageYOffset > 100 ? setHasScrolled(true) : setHasScrolled(false);
+  }, []);
+
+  useEffect(() => {
+    window.pageYOffset > 100 ? setHasScrolled(true) : setHasScrolled(false);
+    window.addEventListener('scroll', checkScrollEvent);
+    return () => {
+      window.removeEventListener('scroll', checkScrollEvent);
+    };
+  }, [hasScrolled, checkScrollEvent]);
+
   const getResources = async () => {
     try {
       const [response] = await Promise.all([
         axios.get('https://api.covid19india.org/resources/resources.json'),
       ]);
-      // console.log(response)
-      // console.log("Column names are")
-      // console.log(columns)
       // setData(response.data.resources);
       const hashmap = {};
       response.data.resources.forEach((x) => {
-        // console.log(x)
         if (typeof hashmap[x['state']] === 'undefined')
           hashmap[x['state']] = {};
         if (typeof hashmap[x['state']][x['city']] === 'undefined')
@@ -59,11 +75,25 @@ function Resources(props) {
       // setIndianState(Object.keys()[0]);
 
       setFetched(true);
-      // console.log(resourcedict);
-    } catch (err) {
-      // console.log(err);
-    }
+    } catch (err) {}
   };
+
+  const handleDisclaimerClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleDisclaimerClose = () => {
+    setAnchorEl(null);
+  };
+
+  const isDisclaimerOpen = Boolean(anchorEl);
+  const id = isDisclaimerOpen ? 'simple-popover' : undefined;
+
+  function animateScroll() {
+    document.body.scrollTo({top: 0, behavior: 'smooth'}); // For Safari
+    document.documentElement.scrollTo({top: 0, behavior: 'smooth'}); // For Chrome, Firefox, IE and Opera
+  }
+
   const memocols = React.useMemo(
     () => [
       {
@@ -87,8 +117,9 @@ function Resources(props) {
         accessor: 'phonenumber',
       },
       {
-        Header: 'Website',
+        Header: 'Source',
         accessor: 'contact',
+        isVisible: false,
       },
     ],
     []
@@ -97,13 +128,25 @@ function Resources(props) {
 
   const getCityOptions = function () {
     if (indianstate) {
-      return Object.keys(resourcedict[indianstate])
-        .sort()
-        .map((x) => (
-          <option key={x.id} value={x}>
-            {x}
-          </option>
-        ));
+      if (indianstate === 'all') return [];
+      else {
+        return Object.keys(resourcedict[indianstate])
+          .sort()
+          .map((x, i) => (
+            <option
+              key={i}
+              value={x}
+              style={{
+                fontFamily: 'archia',
+                fontSize: '11px !important',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+              }}
+            >
+              {x}
+            </option>
+          ));
+      }
     } else return [];
     // return getCityList().map((x) => <option value={x}>{x}</option>)
   };
@@ -111,48 +154,126 @@ function Resources(props) {
     // let defaultOption = ['Please select']
     return Object.keys(resourcedict)
       .sort()
-      .map((x) => (
-        <option key={x.id} value={x}>
+      .map((x, i) => (
+        <option
+          key={i}
+          value={x}
+          style={{
+            fontFamily: 'archia',
+            fontSize: '11px !important',
+            fontWeight: 600,
+            textTransform: 'uppercase',
+          }}
+        >
           {x}
         </option>
       ));
   };
   const getCategoryOptions = function () {
     if (indianstate && city) {
-      if (city === 'all') return [];
-      else {
-        return Object.keys(resourcedict[indianstate][city])
-          .sort()
-          .map((x) => (
-            <option key={x.id} value={x}>
+      if (indianstate === 'all') {
+        const array = [];
+        Object.values(resourcedict).forEach((state) => {
+          Object.values(state).forEach((citydata) => {
+            Object.keys(citydata).forEach((x) => {
+              if (array.indexOf(x) === -1) array.push(x);
+            });
+          });
+        });
+        return array.sort().map((x, i) => (
+          <option
+            key={i}
+            value={x}
+            style={{
+              fontFamily: 'archia',
+              fontSize: '11px !important',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+            }}
+          >
+            {x}
+          </option>
+        ));
+      } else {
+        if (city === 'all') {
+          const array = [];
+          Object.values(resourcedict[indianstate]).forEach((citydata) => {
+            Object.keys(citydata).forEach((x) => {
+              if (array.indexOf(x) === -1) array.push(x);
+            });
+          });
+          return array.sort().map((x, i) => (
+            <option
+              key={i}
+              value={x}
+              style={{
+                fontFamily: 'archia',
+                fontSize: '11px !important',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+              }}
+            >
               {x}
             </option>
           ));
+        } else {
+          return Object.keys(resourcedict[indianstate][city])
+            .sort()
+            .map((x, i) => (
+              <option
+                key={i}
+                value={x}
+                style={{
+                  fontFamily: 'archia',
+                  fontSize: '11px !important',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                }}
+              >
+                {x}
+              </option>
+            ));
+        }
       }
     } else return [];
   };
 
   const filterTable = function () {
-    // console.log('Search Button Pressed');
-    // console.log(`Filters are: ${indianstate} ---> ${city} ----> ${category}`);
     let a = [];
     if (category === 'all') {
-      // console.log("All category selected");
       if (city === 'all') {
-        Object.values(resourcedict[indianstate]).forEach((citydata) => {
-          Object.values(citydata).forEach((category) => {
-            category.forEach((x) => a.push(x));
+        if (indianstate === 'all') {
+          Object.values(resourcedict).forEach((state) => {
+            Object.values(state).forEach((citydata) => {
+              Object.values(citydata).forEach((category) => {
+                category.forEach((x) => a.push(x));
+              });
+            });
           });
-        });
+        } else {
+          Object.values(resourcedict[indianstate]).forEach((citydata) => {
+            Object.values(citydata).forEach((category) => {
+              category.forEach((x) => a.push(x));
+            });
+          });
+        }
       } else {
         Object.values(resourcedict[indianstate][city]).forEach((x) => {
           x.forEach((y) => a.push(y));
         });
       }
     } else {
-      // console.log(`Category chosen ${category}`);
-      // a = resourcedict[indianstate][city][category];
-      if (city === 'all') {
+      if (indianstate === 'all' && city === 'all') {
+        Object.values(resourcedict).forEach((state) => {
+          Object.values(state).forEach((citydata) => {
+            Object.values(citydata).forEach((categorydata) => {
+              categorydata.forEach((x) => {
+                if (x.category === category) a.push(x);
+              });
+            });
+          });
+        });
+      } else if (indianstate !== 'all' && city === 'all') {
         Object.values(resourcedict[indianstate]).forEach((citydata) => {
           if (category in citydata) {
             citydata[category].forEach((x) => {
@@ -172,12 +293,9 @@ function Resources(props) {
           }
         );
       }
-    } catch (err) {
-      // console.log('No PAN India row found');
-    }
+    } catch (err) {}
     setData(a);
-    // console.log(resourcedict[indianstate][city][category]);
-    // console.log(data);
+    setPartData(a.slice(0, 30));
     setShowTable(true);
   };
 
@@ -205,82 +323,134 @@ function Resources(props) {
   };
   const changeCategory = function (changedcategoryevent) {
     setCategory(changedcategoryevent.target.value);
-    // console.log(changedcategoryevent.target.value);
+  };
+  const appendData = function () {
+    const tempArr = partData.concat(
+      data.slice(partData.length, partData.length + 30)
+    );
+    setPartData(tempArr);
+  };
+
+  const openSharingLink = function (message) {
+    const shareUri = `https://www.addtoany.com/share#url=${encodeURI(
+      'https://www.covid19india.org/essentials'
+    )}&title=${encodeURI(message)}`;
+
+    const h = 500;
+    const w = 500;
+    const left = window.screen.width / 2 - w / 2;
+    const top = window.screen.height / 2 - h / 2;
+    return window.open(
+      shareUri,
+
+      document.title,
+      'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' +
+        w +
+        ', height=' +
+        h +
+        ', top=' +
+        top +
+        ', left=' +
+        left
+    );
+  };
+
+  const openSharingTray = function () {
+    const message =
+      'Discover nearest coronavirus support and essential service providers such as testing lab centres, accommodation shelters and vegetable vendors at ';
+    if (navigator.share !== undefined) {
+      navigator
+        .share({
+          title: document.title,
+          text: message,
+          url: 'https://www.covid19india.org/essentials',
+        })
+        .then()
+        .catch((error) => {});
+    } else {
+      openSharingLink(message);
+    }
   };
   return (
-    <div className="Resources">
+    <div className="Resources" id="top-elem">
       <div className="filtersection">
         <div className="filtertitle">
-          <h3>Apply filters and hit search</h3>
+          <h3>Service Before Self</h3>
         </div>
-        <div className="resourcefilters">
-          <div className="resourcefilter">
-            {/* <label for='stateselect1' className='filterlabel'>
-                            State
-                        </label> */}
-            <select
-              id="stateselect1"
-              onChange={changeIndianState}
-              defaultValue=""
-            >
-              <option value="" disabled hidden>
-                Choose State
-              </option>
-              {getIndianStateOptions()}
-            </select>
-          </div>
-          <div className="resourcefilter">
-            {/* <label for='cityselect1' className='filterlabel'>
-                            City
-                        </label> */}
-            <select
-              id="cityselect1"
-              onChange={changeCity}
-              disabled={indianstate === ''}
-              defaultValue=""
-            >
-              <option value="" disabled hidden>
-                Choose City
-              </option>
-              <option value="all">All Cities</option>
-              {getCityOptions()}
-            </select>
-          </div>
-          <div className="resourcefilter">
-            {/* <label for='categoryselect' className='filterlabel'>
-                            Category
-                        </label> */}
-            <select
-              id="categoryselect"
-              onChange={changeCategory}
-              disabled={indianstate === ''}
-              defaultValue=""
-            >
-              <option value="" disabled hidden>
-                Choose Category
-              </option>
-              <option value="all">All Categories</option>
-              {getCategoryOptions()}
-            </select>
-          </div>
-          <div className="resourcefilter">
-            <button
-              className="button is-purple"
-              disabled={!indianstate}
-              onClick={filterTable}
-              style={!indianstate ? {pointerEvents: 'none'} : null}
-            >
-              Search
-            </button>
-          </div>
-        </div>
-      </div>
-      <br></br>
-      <div className="TableArea fadeInOut">
-        {showTable && (
-          <ResourceTable columns={memocols} data={data} isDesktop={isDesktop} />
+        {!isDesktop && (
+          <FiltersMobile
+            handleDisclaimerClick={handleDisclaimerClick}
+            popoverid={id}
+            isDisclaimerOpen={isDisclaimerOpen}
+            anchorEl={anchorEl}
+            handleDisclaimerClose={handleDisclaimerClose}
+            indianstate={indianstate}
+            changeIndianState={changeIndianState}
+            stateoptions={getIndianStateOptions()}
+            city={city}
+            changeCity={changeCity}
+            cityoptions={getCityOptions()}
+            category={category}
+            changeCategory={changeCategory}
+            servicesoptions={getCategoryOptions()}
+            filterTable={filterTable}
+            openSharingTray={openSharingTray}
+          />
+        )}
+        {isDesktop && (
+          <FiltersDesktop
+            handleDisclaimerClick={handleDisclaimerClick}
+            popoverid={id}
+            isDisclaimerOpen={isDisclaimerOpen}
+            anchorEl={anchorEl}
+            handleDisclaimerClose={handleDisclaimerClose}
+            indianstate={indianstate}
+            changeIndianState={changeIndianState}
+            stateoptions={getIndianStateOptions()}
+            city={city}
+            changeCity={changeCity}
+            cityoptions={getCityOptions()}
+            category={category}
+            changeCategory={changeCategory}
+            servicesoptions={getCategoryOptions()}
+            filterTable={filterTable}
+            openSharingTray={openSharingTray}
+          />
         )}
       </div>
+      {showTable && (
+        <React.Fragment>
+          <ResourceTable
+            columns={memocols}
+            data={partData}
+            totalCount={data.length}
+            isDesktop={isDesktop}
+            onScrollUpdate={appendData}
+            city={city}
+            category={category}
+            indianstate={indianstate}
+          />
+          <div>
+            <Fade in={hasScrolled}>
+              <Fab
+                color="inherit"
+                aria-label="gototop"
+                id="gototopbtn"
+                onClick={animateScroll}
+                size="small"
+                style={{
+                  position: 'fixed',
+                  bottom: '1rem',
+                  right: '1rem',
+                  zIndex: '1000',
+                }}
+              >
+                <Icon.Navigation2 strokeWidth="2.5" color="#4c75f2" />
+              </Fab>
+            </Fade>
+          </div>
+        </React.Fragment>
+      )}
     </div>
   );
 }

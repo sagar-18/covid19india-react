@@ -1,27 +1,26 @@
+import './App.scss';
+
+import DeepDive from './components/deepdive';
+import FAQ from './components/faq';
+import Home from './components/home';
+import Navbar from './components/navbar';
+import PatientDB from './components/patientdb';
+import Resources from './components/resources';
+import State from './components/state';
+import ScrollToTop from './utils/ScrollToTop';
+import Global from './components/global';
+import Cluster from './components/cluster';
+
+
+
 import React from 'react';
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
   Redirect,
+  Switch,
 } from 'react-router-dom';
-import * as Icon from 'react-feather';
-
-import './App.scss';
-
-import Home from './components/home';
-import Navbar from './components/navbar';
-import Links from './components/links';
-import Cluster from './components/cluster';
-import Global from './components/global';
-import FAQ from './components/faq';
-import Banner from './components/banner';
-import PatientDB from './components/patientdb';
-import DeepDive from './components/deepdive';
-import Resources from './components/resources';
-/* import PatientDB from './components/patientdb';*/
-
-const history = require('history').createBrowserHistory;
+import {useLocalStorage} from 'react-use';
 
 function App() {
 
@@ -31,6 +30,7 @@ function App() {
       view: Home,
       displayName: 'Home',
       animationDelayForNavbar: 0.2,
+      showInNavbar: true,
     },
    
     {
@@ -52,6 +52,7 @@ function App() {
       view: PatientDB,
       displayName: 'Demographics',
       animationDelayForNavbar: 0.3,
+      showInNavbar: true,
     },
 
     {
@@ -59,44 +60,61 @@ function App() {
       view: DeepDive,
       displayName: 'Deep Dive',
       animationDelayForNavbar: 0.4,
-    },
-    {
-      pageLink: '/links',
-      view: Links,
-      displayName: 'Helpful Links',
-      animationDelayForNavbar: 0.4,
-    },
-    {
-      pageLink: '/faq',
-      view: FAQ,
-      displayName: 'About',
-      animationDelayForNavbar: 0.5,
+      showInNavbar: true,
     },
     {
       pageLink: '/essentials',
       view: Resources,
       displayName: 'Essentials',
+      animationDelayForNavbar: 0.5,
+      showInNavbar: true,
+    },
+    {
+      pageLink: '/faq',
+      view: FAQ,
+      displayName: 'FAQ',
+      animationDelayForNavbar: 0.6,
+      showInNavbar: true,
+    },
+    {
+      pageLink: '/state/:stateCode',
+      view: State,
+      displayName: 'State',
       animationDelayForNavbar: 0.7,
+      showInNavbar: false,
     },
   ];
 
+  const [darkMode, setDarkMode] = useLocalStorage('darkMode', false);
+
+  React.useEffect(() => {
+    if (darkMode) {
+      document.querySelector('body').classList.add('dark-mode');
+    } else {
+      document.querySelector('body').classList.remove('dark-mode');
+    }
+  }, [darkMode]);
+
   return (
-    <div className="App">
-      <Router history={history}>
+    <div className={`App ${darkMode ? 'dark-mode' : ''}`}>
+      <Router>
+        <ScrollToTop />
         <Route
           render={({location}) => (
             <div className="Almighty-Router">
-              <Navbar pages={pages} />
-              <Banner />
-              <Route exact path="/" render={() => <Redirect to="/" />} />
+              <Navbar
+                pages={pages}
+                darkMode={darkMode}
+                setDarkMode={setDarkMode}
+              />
               <Switch location={location}>
-                {pages.map((page, i) => {
+                {pages.map((page, index) => {
                   return (
                     <Route
                       exact
                       path={page.pageLink}
                       component={page.view}
-                      key={i}
+                      key={index}
                     />
                   );
                 })}
@@ -107,32 +125,6 @@ function App() {
         />
       </Router>
 
-      <footer className="fadeInUp" style={{animationDelay: '2s'}}>
-
-        <h5>We stand with everyone fighting on the frontlines</h5>
-        <div className="link">
-          <a href="https://india.coronacurfew.live">india.coronacurfew.live</a>
-        </div>
-        <div id="footerButtons">
-          <a
-            className="button"
-            href="https://india.coronacurfew.live/clusters"
-          >
-            <Icon.Database />
-            <span>Live India Clusters Database&nbsp;</span>
-          </a>
-          <a
-            href="https://www.coronacurfew.live/"
-            className="button telegram"
-          >
-            <Icon.MessageCircle />
-            <span>Live Global Covid-19 Tracker</span>
-
-          </a>
-        </div>
-
-
-      </footer>
     </div>
   );
 }
