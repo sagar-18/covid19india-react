@@ -33,12 +33,6 @@ function App() {
       showInNavbar: true,
     },
    
-    {
-    pageLink: '/global',
-    view: Global,
-    displayName: 'Live Global Tracker',
-    animationDelayForNavbar: 0.3,
-  },
   {
     pageLink: '/clusters',
     view: Cluster,
