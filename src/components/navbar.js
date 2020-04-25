@@ -37,7 +37,7 @@ function Navbar({pages, darkMode, setDarkMode}) {
             setExpand(false);
           }}
         >
-          Covid19<span>India</span>
+          Coronacurfew<span>Live</span>
         </Link>
       </div>
 
@@ -69,6 +69,11 @@ function Navbar({pages, darkMode, setDarkMode}) {
             <span>
               <Link to="/">
                 <Icon.Home {...activeNavIcon('/')} />
+              </Link>
+            </span>
+              <span>
+              <Link to="/global">
+                <Icon.Users {...activeNavIcon('/global')} />
               </Link>
             </span>
             <span>
@@ -142,7 +147,7 @@ function Expand({expand, pages, setExpand}) {
       })}
 
       <div className="expand-bottom fadeInUp" style={{animationDelay: '1s'}}>
-        <h5>A crowdsourced initiative.</h5>
+        <h5>India Covid-19 Tracker.</h5>
       </div>
     </div>
   );
