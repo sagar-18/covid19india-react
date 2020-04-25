@@ -20,7 +20,7 @@ function Footer(props) {
 
       <a
         className="button excel"
-        href="https://india.coronacurfew.live/demographics"
+        href="https://www.coronacurfew.live/demographics"
         target="_blank"
         rel="noopener noreferrer"
       >
