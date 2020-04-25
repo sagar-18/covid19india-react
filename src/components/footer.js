@@ -31,7 +31,7 @@ function Footer(props) {
      
 
       <a
-        href="https://bit.ly/covid19crowd"
+        href="https://global.coronacurfew.live"
         className="button telegram"
         target="_blank"
         rel="noopener noreferrer"
