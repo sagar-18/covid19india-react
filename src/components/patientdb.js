@@ -46,7 +46,7 @@ function PatientDB(props) {
   useEffectOnce(() => {
     try {
       axios
-        .get('https://api.covid19india.org/raw_data.json')
+        .get('https://api.covid19india.org/raw_data3.json')
         .then((response) => {
           setPatients(response.data.raw_data.reverse());
           setFetched(true);
@@ -341,11 +341,16 @@ function PatientDB(props) {
         <div>
           <h1>Demographics</h1>
 
-          <div className="deep-dive">
+          <div
+            className={`deep-dive ${
+              message || filteredPatients.length === 0 ? 'disabled' : ''
+            }`}
+          >
             <h5>Expand</h5>
             <input
               type="checkbox"
               checked={scaleMode}
+              disabled={message || filteredPatients.length === 0}
               onChange={(event) => {
                 setScaleMode(!scaleMode);
               }}

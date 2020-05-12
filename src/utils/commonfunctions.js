@@ -1,4 +1,4 @@
-import {STATE_CODES} from '../constants';
+import {STATE_CODES, STATE_CODES_REVERSE} from '../constants';
 
 import {
   parse,
@@ -22,6 +22,12 @@ const months = {
   '10': 'Oct',
   '11': 'Nov',
   '12': 'Dec',
+};
+
+export const isDevelopmentOrTest = () => {
+  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test')
+    return true;
+  return false;
 };
 
 export const getStateName = (code) => {
@@ -144,11 +150,6 @@ export const parseStateTimeseries = ({states_daily: data}) => {
 };
 
 export const parseStateTestTimeseries = (data) => {
-  const stateCodeMap = Object.keys(STATE_CODES).reduce((ret, sc) => {
-    ret[STATE_CODES[sc]] = sc;
-    return ret;
-  }, {});
-
   const testTimseries = Object.keys(STATE_CODES).reduce((ret, sc) => {
     ret[sc] = [];
     return ret;
@@ -158,8 +159,8 @@ export const parseStateTestTimeseries = (data) => {
   data.forEach((d) => {
     const date = parse(d.updatedon, 'dd/MM/yyyy', new Date());
     const totaltested = +d.totaltested;
-    if (isBefore(date, today) && totaltested) {
-      const stateCode = stateCodeMap[d.state];
+    const stateCode = STATE_CODES_REVERSE[d.state];
+    if (stateCode && isBefore(date, today) && totaltested) {
       const stateTs = testTimseries[stateCode];
       let dailytested;
       if (stateTs.length) {
@@ -234,14 +235,27 @@ export const capitalize = (s) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
+export const capitalizeAll = (s) => {
+  if (typeof s !== 'string') return '';
+  const str = s.toLowerCase().split(' ');
+  for (let i = 0; i < str.length; i++) {
+    str[i] = capitalize(str[i]);
+  }
+  return str.join(' ');
+};
+
 export const abbreviate = (s) => {
   return s.slice(0, 1) + s.slice(1).replace(/[aeiou]/gi, '');
 };
 
-export const parseDistrictZones = (data) => {
-  return data.reduce((ret, d) => {
+export const parseDistrictZones = (data, state) => {
+  const zones = data.reduce((ret, d) => {
     ret[d.state] = ret[d.state] || {};
     ret[d.state][d.district] = d;
     return ret;
   }, {});
+  Object.values(STATE_CODES).forEach((state) => {
+    if (!zones[state]) zones[state] = {};
+  });
+  return state ? {[state]: zones[state]} : zones;
 };

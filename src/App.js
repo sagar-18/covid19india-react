@@ -8,6 +8,7 @@ import Cluster from './components/cluster';
 
 import React, {Suspense, lazy} from 'react';
 import {Helmet} from 'react-helmet';
+import {useTranslation} from 'react-i18next';
 import {
   BrowserRouter as Router,
   Route,
@@ -35,6 +36,8 @@ const schemaMarkup = {
 
 function App() {
 
+  const {t} = useTranslation();
+
   const pages = [
     {
       pageLink: '/',
@@ -61,7 +64,7 @@ function App() {
     {
       pageLink: '/demographics',
       view: PatientDB,
-      displayName: 'Demographics',
+      displayName: t('Demographics'),
       animationDelayForNavbar: 0.3,
       showInNavbar: true,
     },
@@ -69,28 +72,28 @@ function App() {
     {
       pageLink: '/deepdive',
       view: DeepDive,
-      displayName: 'Deep Dive',
+      displayName: t('Deep Dive'),
       animationDelayForNavbar: 0.4,
       showInNavbar: true,
     },
     {
       pageLink: '/essentials',
       view: Resources,
-      displayName: 'Essentials',
+      displayName: t('Essentials'),
       animationDelayForNavbar: 0.5,
       showInNavbar: true,
     },
     {
-      pageLink: '/faq',
+      pageLink: '/about',
       view: FAQ,
-      displayName: 'FAQ',
+      displayName: t('About'),
       animationDelayForNavbar: 0.6,
       showInNavbar: true,
     },
     {
       pageLink: '/state/:stateCode',
       view: State,
-      displayName: 'State',
+      displayName: t('State'),
       animationDelayForNavbar: 0.7,
       showInNavbar: false,
     },
@@ -133,16 +136,7 @@ function App() {
 
       <Router>
         <ScrollToTop />
-        <Suspense
-          fallback={
-            <div>
-              <p>Loading...</p>
-              <p>
-                Try refreshing if it does not load or check internet connection.
-              </p>
-            </div>
-          }
-        >
+        <Suspense fallback={<div className="lazy"></div>}>
           <Route
             render={({location}) => (
               <div className="Almighty-Router">
